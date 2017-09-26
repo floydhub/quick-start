@@ -13,11 +13,11 @@ import tensorflow as tf
 
 # Import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+mnist = input_data.read_data_sets("/mnist", one_hot=True)
 
 # Parameters
 learning_rate = 0.001
-training_iters = 200000
+training_iters = 10#0000
 batch_size = 128
 display_step = 10
 
@@ -127,8 +127,6 @@ with tf.Session() as sess:
         step += 1
     print("Optimization Finished!")
 
-    # Calculate accuracy for 256 mnist test images
-    print("Testing Accuracy:", \
-        sess.run(accuracy, feed_dict={x: mnist.test.images[:256],
-                                      y: mnist.test.labels[:256],
-                                      keep_prob: 1.}))
+    print("Saving the model at /output/mnist_model")
+    saver = tf.train.Saver(save_relative_paths=True)
+    saver.save(sess, '/output/mnist_model')
