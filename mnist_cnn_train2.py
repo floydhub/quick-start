@@ -17,7 +17,7 @@ mnist = input_data.read_data_sets("/mnist", one_hot=True)
 
 # Parameters
 learning_rate = 0.001
-training_iters = 100000#0000
+training_iters = 10000#0000
 batch_size = 128
 display_step = 10
 
@@ -105,6 +105,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name="accuracy")
 
 # Initializing the variables
 init = tf.global_variables_initializer()
+builder = tf.saved_model.builder.SavedModelBuilder("/output/")
 
 # Launch the graph
 with tf.Session() as sess:
@@ -127,11 +128,15 @@ with tf.Session() as sess:
         step += 1
     print("Optimization Finished!")
 
-    print("Saving the model at /output/mnist_model")
-    saver = tf.train.Saver(save_relative_paths=True)
-    saver.save(sess, '/output/mnist_model')
+    builder.add_meta_graph_and_variables(sess,
+                                       ["EVALUATING"])
+
+    # print("Saving the model at /output/mnist_model")
+    # saver = tf.train.Saver(save_relative_paths=True)
+    # saver.save(sess, '/output/mnist_model')
 
     # FIX: Save the variables to disk.
     # save_path = saver.save(sess, "/tmp/model.ckpt")
     # print("Model saved in file: %s" % save_path)
+builder.save()
 
