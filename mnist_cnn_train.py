@@ -17,7 +17,7 @@ mnist = input_data.read_data_sets("/mnist", one_hot=True)
 
 # Parameters
 learning_rate = 0.001
-training_iters = 10#0000
+training_iters = 100000#0000
 batch_size = 128
 display_step = 10
 
@@ -27,9 +27,9 @@ n_classes = 10 # MNIST total classes (0-9 digits)
 dropout = 0.75 # Dropout, probability to keep units
 
 # tf Graph input
-x = tf.placeholder(tf.float32, [None, n_input])
-y = tf.placeholder(tf.float32, [None, n_classes])
-keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
+x = tf.placeholder(tf.float32, [None, n_input], name="x")
+y = tf.placeholder(tf.float32, [None, n_classes], name="y")
+keep_prob = tf.placeholder(tf.float32, name="keep_prob") #dropout (keep probability)
 
 
 # Create some wrappers for simplicity
@@ -101,7 +101,7 @@ optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 # Evaluate model
 correct_pred = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
-accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name="accuracy")
 
 # Initializing the variables
 init = tf.global_variables_initializer()
@@ -130,3 +130,8 @@ with tf.Session() as sess:
     print("Saving the model at /output/mnist_model")
     saver = tf.train.Saver(save_relative_paths=True)
     saver.save(sess, '/output/mnist_model')
+
+    # FIX: Save the variables to disk.
+    # save_path = saver.save(sess, "/tmp/model.ckpt")
+    # print("Model saved in file: %s" % save_path)
+
