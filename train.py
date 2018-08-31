@@ -105,7 +105,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name="accuracy")
 
 # Initializing the variables
 init = tf.global_variables_initializer()
-builder = tf.saved_model.builder.SavedModelBuilder("/output/cnn_model")
+builder = tf.saved_model.builder.SavedModelBuilder("cnn_model")
 
 # Launch the graph
 with tf.Session() as sess:
