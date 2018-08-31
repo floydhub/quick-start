@@ -1,7 +1,0 @@
-machine: gpu
-env: tensorflow-1.3
-input:
-  - source: floydhub/datasets/mnist/1
-    destination: mnist
-command: python train.py
-description: my first training job on FloydHub!
